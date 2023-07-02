@@ -21,7 +21,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
                 <p data-testid="product-price" className={bem('Price', ['card-text'])}>
                     ${product.price}
                 </p>
-                <Link data-testid="link-to-details" to={`/catalog/${product.id}`} className={bem('DetailsLink', ['card-link'])}>Details</Link>
+                <Link id="link-to-details" to={`/catalog/${product.id}`} className={bem('DetailsLink', ['card-link'])}>Details</Link>
                 <CartBadge id={product.id} />
             </div>
         </div>

@@ -275,6 +275,30 @@ describe('Проверка страницы детальной информац�
     });
 });
 
+describe('Проверка детальной информации', async function () {
+    it('Статические элементы страницы должны быть неизменными', async function () {
+        const puppeteer = await this.browser.getPuppeteer();
+        const [page] = await puppeteer.pages();
+        this.browser.setWindowSize(1920, 1080)
+        const url = `http://localhost:3000/hw/store/catalog${BUG_ID}`;
+        await this.browser.url(url);
+
+        // const linkToСatalog = await this.browser.$('a=Catalog');
+        const linkToDetails = await this.browser.$('.ProductItem-DetailsLink');
+        // const linkToDetails = this.document.querySelector('.ProductItem-DetailsLink')  
+        
+        console.log(linkToDetails)
+        await linkToDetails.click(); 
+        // Ожидание перехода на другую страницу
+        // await page.waitForNavigation();
+
+        // const blockDetails = await this.browser.$('h5[data-testid="product-name"]').getText();
+        await this.browser.assertView('plain', 'body', {
+            screenshotDelay: 1000,
+            ignoreElements: ['.test'],
+        });
+    });
+});
 
 // describe('Проверка страницы каталог', async function () {
 //     it('Проверка карточек на наличие данных', async function () {

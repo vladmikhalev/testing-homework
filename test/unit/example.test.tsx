@@ -318,7 +318,6 @@ describe("Catalog", () => {
         )
 
         let { container } = render(productItem);
-
         expect(dataDetails).toContainEqual({
             id: Number(productData.id),
             name: container.querySelector('.ProductDetails-Name').textContent,
@@ -328,8 +327,39 @@ describe("Catalog", () => {
             material: container.querySelector('.ProductDetails-Material').textContent,
         })
         expect(container.querySelector('.ProductDetails-AddToCart')).not.toBeNull()
-
+        expect(container.querySelector('.ProductDetails')).not.toBeNull()
+        // console.log(container.querySelector('.ProductDetails'))
     })
+    
+    // it('На у"', async () => {
+    //     const basename = '/hw/store/catalog/1';
+    //     const api = new ExampleApi(basename);
+    //     const cart = new CartApi();
+    //     const store = initStore(api, cart);
+    //     let application = (
+    //         <MemoryRouter initialEntries={["/catalog/1"]} initialIndex={0}>
+    //             <Provider store={store}>
+    //                 <Application />
+    //             </Provider>
+    //         </MemoryRouter>
+    //     );
+        
+    //     let { container } = render(application)
+
+
+    //     // expect(dataDetails).toContainEqual({
+    //     //     id: Number(productData.id),
+    //     //     name: container.querySelector('.ProductDetails-Name').textContent,
+    //     //     description: container.querySelector('.ProductDetails-Description').textContent,
+    //     //     price: Number(container.querySelector('.ProductDetails-Price').textContent.substring(1, container.querySelector('.ProductDetails-Price').textContent.length)),
+    //     //     color: container.querySelector('.ProductDetails-Color').textContent,
+    //     //     material: container.querySelector('.ProductDetails-Material').textContent,
+    //     // })
+    //     // expect(container.querySelector('.ProductDetails-AddToCart')).not.toBeNull()
+    //     // expect(container.querySelector('.ProductDetails')).not.toBeNull()
+    //     console.log(container.querySelector('.ProductDetails'))
+    // })
+
 
     it('Если товар уже добавлен в корзину, в каталоге и на странице товара должно отображаться сообщение об этом', async () => {
         let productsIds = (await mockApi.getProducts()).data.map((el) => el.id)
@@ -618,7 +648,44 @@ describe("Cart", () => {
     //     expect(addressInput.className.includes('is-invalid')).not.toBeTruthy()
     // });
 
-    it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше', async () => {
+    // it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше', async () => {
+    //     let formComp = (
+    //         <BrowserRouter>
+    //             <Provider store={store}>
+    //                 <Form onSubmit={ () => null }/>
+    //             </Provider>
+    //         </BrowserRouter>
+    //     )
+
+    //     let cartRender = render(formComp);
+    //     let nameInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_name')
+    //     let phoneInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_phone')
+    //     let addressInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_address')
+    //     let submitBtn = cartRender.container.querySelector('.Form-Submit');
+
+    //     await events.type(nameInput, ' ')
+    //     await events.type(phoneInput, 'hi')
+    //     await events.type(addressInput, ' ')
+    //     await events.click(submitBtn)
+
+    //     expect(nameInput.className.includes('is-invalid')).toBeTruthy()
+    //     expect(phoneInput.className.includes('is-invalid')).toBeTruthy()
+    //     expect(addressInput.className.includes('is-invalid')).toBeTruthy()
+
+    //     nameInput.value = '';
+    //     phoneInput.value = '';
+    //     addressInput.value = '';
+
+    //     await events.type(nameInput, 'Петр Петрович')
+    //     await events.type(phoneInput, '1234567890')
+    //     await events.type(addressInput, 'Москва')
+    //     await events.click(submitBtn)
+
+    //     expect(nameInput.className.includes('is-invalid')).not.toBeTruthy()
+    //     expect(phoneInput.className.includes('is-invalid')).not.toBeTruthy()
+    //     expect(addressInput.className.includes('is-invalid')).not.toBeTruthy()
+    // });
+    it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше и возвращает сообщение с успехом', async () => {
         let formComp = (
             <BrowserRouter>
                 <Provider store={store}>
@@ -655,7 +722,6 @@ describe("Cart", () => {
         expect(phoneInput.className.includes('is-invalid')).not.toBeTruthy()
         expect(addressInput.className.includes('is-invalid')).not.toBeTruthy()
     });
-
 
 
 })
