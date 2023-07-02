@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosStatic } from 'axios';
 import { CartState, CheckoutFormData, CheckoutResponse, Product, ProductShortInfo } from '../common/types';
 
 export class ExampleApi {
     constructor(private readonly basename: string) {
-
+        
     }
 
     async getProducts() {
@@ -18,6 +18,7 @@ export class ExampleApi {
         return await axios.post<CheckoutResponse>(`${this.basename}/api/checkout`, { form, cart });
     }
 }
+
 
 export const LOCAL_STORAGE_CART_KEY = 'example-store-cart';
 

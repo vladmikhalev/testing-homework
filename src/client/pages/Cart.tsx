@@ -80,7 +80,7 @@ export const Cart: React.FC = () => {
             </div>
         </div>
     );
-
+    
     const form = cartIsEmpty ? null : (
         <div className="row">
             <div className="col-12 col-sm-8 col-md-6 col-lg-4">

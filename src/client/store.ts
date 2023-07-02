@@ -146,8 +146,7 @@ export function initStore(api: ExampleApi, cart: CartApi) {
     });
 
     const store = createStore(rootReducer, applyMiddleware(epicMiddleware));
-
     epicMiddleware.run(rootEpic);
-
+    
     return store;
 }
