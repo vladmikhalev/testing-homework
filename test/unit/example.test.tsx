@@ -1,10 +1,7 @@
 import { it, expect } from "@jest/globals";
 import events from "@testing-library/user-event";
-import { fireEvent, getByTestId, render, screen, waitFor } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-// import '@testing-library/jest-dom/extend-expect';
+import { render, screen, waitFor } from '@testing-library/react';
 import "@testing-library/jest-dom";
-// import {toBeDisabled} from '@testing-library/jest-dom/matchers';
 import configureStore, { MockStoreEnhanced } from 'redux-mock-store';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
@@ -22,14 +19,6 @@ import { AnyAction } from "redux";
 import { Cart } from "../../src/client/pages/Cart";
 import { Form } from "../../src/client/components/Form";
 
-// const dataDetails = {
-//     "id": 0,
-//     "name": "Gorgeous Shoes",
-//     "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity,12 months battery life and modern design",
-//     "price": 836,
-//     "color": "black",
-//     "material": "Steel",
-// }
 
 const dataDetails: Product[] = [
     {
@@ -73,7 +62,6 @@ const data: ProductShortInfo[] = [
     { "id": 2, "name": "Rustic Cheese", "price": 448 },
     { "id": 3, "name": "Handmade Car", "price": 412 },
 ]
-// import { application } from "../../src/client/index";
 
 describe('Общие требования:', () => {
     it('В шапке отображаются ссылки на страницы магазина, а также ссылка на корзину', async () => {
@@ -133,106 +121,59 @@ describe('Общие требования:', () => {
 
 
 
-// describe('Cтраницы:', () => {
-//     it('В магазине должны быть страницы: главная', async () => {
-//         const history = createMemoryHistory({
-//             initialEntries: ['/hw/store'], 
-//             initialIndex: 0,
-//           });
+describe('Cтраницы:', () => {
+    it('В магазине должны быть страницы: главная', async () => {
 
+        const basename = '/hw/store';
+        const api = new ExampleApi(basename);
+        const cart = new CartApi();
+        const store = initStore(api, cart);
+        let application = (
+            <MemoryRouter initialEntries={["/"]} initialIndex={0}>
+                <Provider store={store}>
+                    <Application />
+                </Provider>
+            </MemoryRouter>
+        );
+        render(application);
+        const main = screen.getByTestId("main");
+        expect(main.className).toBe("Home"); 
+    });
+    it('В магазине должны быть страницы: условия доставки', async () => {
+        const basename = '/hw/store/delivery';
+        const api = new ExampleApi(basename);
+        const cart = new CartApi();
+        const store = initStore(api, cart);
+        let application = (
+            <MemoryRouter initialEntries={["/delivery"]} initialIndex={0}>
+                <Provider store={store}>
+                    <Application />
+                </Provider>
+            </MemoryRouter>
+        );
+        render(application);
 
-//         const basename = '/hw/store';
-//         const api = new ExampleApi(basename);
-//         const cart = new CartApi();
-//         const store = initStore(api, cart);
-//         let application = (
-//             <MemoryRouter initialEntries={["/"]} initialIndex={0}>
-//                 <Provider store={store}>
-//                     <Application />
-//                 </Provider>
-//             </MemoryRouter>
-//         );
-//         render(application);
-//         const currentUrl = history.location.pathname;
-//         console.log(currentUrl);
-//         const main = screen.getByTestId("main");
-//         expect(currentUrl).toBe("/hw/store");
-//         expect(main.className).toBe("Home"); 
-//     });
-    // it('В магазине должны быть страницы: каталог', async () => {
-    //     const history = createMemoryHistory({
-    //         initialEntries: ['/hw/store/catalog'], 
-    //         initialIndex: 0,
-    //       });
+        const titleDelivery = screen.getByTestId("title-delivery");
+        expect(titleDelivery.textContent).toBe("Delivery"); 
+    });
+    it('В магазине должны быть страницы: контакты', async () => {
 
-
-    //     const basename = '/hw/store/catalog';
-    //     const api = new ExampleApi(basename);
-    //     const cart = new CartApi();
-    //     const store = initStore(api, cart);
-    //     let application = (
-    //         <MemoryRouter initialEntries={["/catalog"]} initialIndex={0}>
-    //             <Provider store={store}>
-    //                 <Application />
-    //             </Provider>
-    //         </MemoryRouter>
-    //     );
-    //     render(application);
-    //     const currentUrl = history.location.pathname;
-    //     const titleCatalog = screen.getByTestId("title-catalog");
-    //     expect(currentUrl).toBe('/hw/store/catalog');
-    //     expect(titleCatalog.textContent).toBe("Catalog"); 
-    // });
-    // it('В магазине должны быть страницы: условия доставки', async () => {
-    //     const history = createMemoryHistory({
-    //         initialEntries: ['/hw/store/delivery'], 
-    //         initialIndex: 0,
-    //       });
-
-
-    //     const basename = '/hw/store/delivery';
-    //     const api = new ExampleApi(basename);
-    //     const cart = new CartApi();
-    //     const store = initStore(api, cart);
-    //     let application = (
-    //         <MemoryRouter initialEntries={["/delivery"]} initialIndex={0}>
-    //             <Provider store={store}>
-    //                 <Application />
-    //             </Provider>
-    //         </MemoryRouter>
-    //     );
-    //     render(application);
-    //     const currentUrl = history.location.pathname;
-
-    //     const titleDelivery = screen.getByTestId("title-delivery");
-    //     expect(currentUrl).toBe('/hw/store/delivery');
-    //     expect(titleDelivery.textContent).toBe("Delivery"); 
-    // });
-    // it('В магазине должны быть страницы: контакты', async () => {
-    //     const history = createMemoryHistory({
-    //         initialEntries: ['/hw/store/contacts'], 
-    //         initialIndex: 0,
-    //       });
-
-
-    //     const basename = '/hw/store/contacts';
-    //     const api = new ExampleApi(basename);
-    //     const cart = new CartApi();
-    //     const store = initStore(api, cart);
-    //     let application = (
-    //         <MemoryRouter initialEntries={["/contacts"]} initialIndex={0}>
-    //             <Provider store={store}>
-    //                 <Application />
-    //             </Provider>
-    //         </MemoryRouter>
-    //     );
-    //     render(application);
-    //     const currentUrl = history.location.pathname;
-    //     const titleContacts = screen.getByTestId("title-contacts");
-    //     expect(currentUrl).toBe('/hw/store/contacts');
-    //     expect(titleContacts.textContent).toBe("Contacts"); 
-    // });
-// })
+        const basename = '/hw/store/contacts';
+        const api = new ExampleApi(basename);
+        const cart = new CartApi();
+        const store = initStore(api, cart);
+        let application = (
+            <MemoryRouter initialEntries={["/contacts"]} initialIndex={0}>
+                <Provider store={store}>
+                    <Application />
+                </Provider>
+            </MemoryRouter>
+        );
+        render(application);
+        const titleContacts = screen.getByTestId("title-contacts");
+        expect(titleContacts.textContent).toBe("Contacts"); 
+    });
+})
 
 
 
@@ -250,10 +191,6 @@ describe("Catalog", () => {
         mockApi = {
             getProducts: jest.fn(() => Promise.resolve({
                 data
-                // data: [
-                //     { id: 'a' },
-                //     { id: 'b' },
-                // ]
             })),
             getProductById: jest.fn((id: number) => Promise.resolve(dataDetails.filter((el) => el.id === id)[0])) as any
         } as any;
@@ -300,7 +237,6 @@ describe("Catalog", () => {
                     price: Number(el.querySelector(".card-text").textContent.substring(1, el.querySelector(".card-text").textContent.length)),
                 }
             })).toContainEqual(item);
-            // console.log(screen.getByTestId("product-name").textContent);
             expect(getAllByTestId(/[0-9]/i).map((el) => el.querySelector('.card-link').getAttribute("href"))).toContain(`/catalog/${item.id}`);
         }
         );
@@ -328,38 +264,8 @@ describe("Catalog", () => {
         })
         expect(container.querySelector('.ProductDetails-AddToCart')).not.toBeNull()
         expect(container.querySelector('.ProductDetails')).not.toBeNull()
-        // console.log(container.querySelector('.ProductDetails'))
     })
     
-    // it('На у"', async () => {
-    //     const basename = '/hw/store/catalog/1';
-    //     const api = new ExampleApi(basename);
-    //     const cart = new CartApi();
-    //     const store = initStore(api, cart);
-    //     let application = (
-    //         <MemoryRouter initialEntries={["/catalog/1"]} initialIndex={0}>
-    //             <Provider store={store}>
-    //                 <Application />
-    //             </Provider>
-    //         </MemoryRouter>
-    //     );
-        
-    //     let { container } = render(application)
-
-
-    //     // expect(dataDetails).toContainEqual({
-    //     //     id: Number(productData.id),
-    //     //     name: container.querySelector('.ProductDetails-Name').textContent,
-    //     //     description: container.querySelector('.ProductDetails-Description').textContent,
-    //     //     price: Number(container.querySelector('.ProductDetails-Price').textContent.substring(1, container.querySelector('.ProductDetails-Price').textContent.length)),
-    //     //     color: container.querySelector('.ProductDetails-Color').textContent,
-    //     //     material: container.querySelector('.ProductDetails-Material').textContent,
-    //     // })
-    //     // expect(container.querySelector('.ProductDetails-AddToCart')).not.toBeNull()
-    //     // expect(container.querySelector('.ProductDetails')).not.toBeNull()
-    //     console.log(container.querySelector('.ProductDetails'))
-    // })
-
 
     it('Если товар уже добавлен в корзину, в каталоге и на странице товара должно отображаться сообщение об этом', async () => {
         let productsIds = (await mockApi.getProducts()).data.map((el) => el.id)
@@ -393,12 +299,8 @@ describe("Catalog", () => {
     it('Если товар уже добавлен в корзину, повторное нажатие кнопки "добавить в корзину" должно увеличивать его количество', async () => {
         let store: any;
         let mockApi: ExampleApi;
-        // let mockCart: CartApi;
         const cartApi = new CartApi();
-        // mockCart = {
-        //     getState: jest.fn(() => []),
-        //     setState: jest.fn(),
-        // };
+
         mockApi = {
             getProducts: jest.fn(() => Promise.resolve({
                 data
@@ -422,10 +324,8 @@ describe("Catalog", () => {
 
         const btnAdd = container.querySelector(".ProductDetails-AddToCart");
         await events.click(btnAdd);
-        // console.log(JSON.parse(localStorage.getItem('example-store-cart')))
         const LS = JSON.parse(localStorage.getItem('example-store-cart'))["0"];
-        // console.log(JSON.parse(localStorage.getItem('example-store-cart'))["0"]);
-        // const itemInfo: any = Object.entries(store.getState().cart).find((el: any) => el[1].name === productData.name)[1];
+
         expect(LS.count).toBe(1);
 
     });
@@ -444,10 +344,6 @@ describe("Cart", () => {
         mockApi = {
             getProducts: jest.fn(() => Promise.resolve({
                 data
-                // data: [
-                //     { id: 'a' },
-                //     { id: 'b' },
-                // ]
             })),
             getProductById: jest.fn((id: number) => Promise.resolve(dataDetails.filter((el) => el.id === id)[0])) as any
         } as any;
@@ -614,77 +510,6 @@ describe("Cart", () => {
         expect(cartRender.container.querySelector('a[href*="/catalog"]')).not.toBeNull();
     });
 
-    // it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше', async () => {
-    //     let formComp = (
-    //         <BrowserRouter>
-    //             <Provider store={store}>
-    //                 <Form onSubmit={() => null} />
-    //             </Provider>
-    //         </BrowserRouter>
-    //     )
-
-    //     let cartRender = render(formComp);
-    //     let nameInput = cartRender.container.querySelector('.Form-Field_type_name')
-    //     let phoneInput = cartRender.container.querySelector('.Form-Field_type_phone')
-    //     let addressInput = cartRender.container.querySelector('.Form-Field_type_address')
-    //     let submitBtn = cartRender.container.querySelector('.Form-Submit');
-
-    //     await events.type(nameInput, ' ')
-    //     await events.type(phoneInput, 'hi')
-    //     await events.type(addressInput, ' ')
-    //     await events.click(submitBtn)
-
-    //     expect(nameInput.className.includes('is-invalid')).toBeTruthy()
-    //     expect(phoneInput.className.includes('is-invalid')).toBeTruthy()
-    //     expect(addressInput.className.includes('is-invalid')).toBeTruthy()
-
-    //     await events.type(nameInput, 'Петр Петрович')
-    //     await events.type(phoneInput, '1234567890')
-    //     await events.type(addressInput, 'Москва')
-    //     await events.click(submitBtn)
-
-    //     expect(nameInput.className.includes('is-invalid')).not.toBeTruthy()
-    //     expect(phoneInput.className.includes('is-invalid')).not.toBeTruthy()
-    //     expect(addressInput.className.includes('is-invalid')).not.toBeTruthy()
-    // });
-
-    // it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше', async () => {
-    //     let formComp = (
-    //         <BrowserRouter>
-    //             <Provider store={store}>
-    //                 <Form onSubmit={ () => null }/>
-    //             </Provider>
-    //         </BrowserRouter>
-    //     )
-
-    //     let cartRender = render(formComp);
-    //     let nameInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_name')
-    //     let phoneInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_phone')
-    //     let addressInput: HTMLInputElement = cartRender.container.querySelector('.Form-Field_type_address')
-    //     let submitBtn = cartRender.container.querySelector('.Form-Submit');
-
-    //     await events.type(nameInput, ' ')
-    //     await events.type(phoneInput, 'hi')
-    //     await events.type(addressInput, ' ')
-    //     await events.click(submitBtn)
-
-    //     expect(nameInput.className.includes('is-invalid')).toBeTruthy()
-    //     expect(phoneInput.className.includes('is-invalid')).toBeTruthy()
-    //     expect(addressInput.className.includes('is-invalid')).toBeTruthy()
-
-    //     nameInput.value = '';
-    //     phoneInput.value = '';
-    //     addressInput.value = '';
-
-    //     await events.type(nameInput, 'Петр Петрович')
-    //     await events.type(phoneInput, '1234567890')
-    //     await events.type(addressInput, 'Москва')
-    //     await events.click(submitBtn)
-
-    //     expect(nameInput.className.includes('is-invalid')).not.toBeTruthy()
-    //     expect(phoneInput.className.includes('is-invalid')).not.toBeTruthy()
-    //     expect(addressInput.className.includes('is-invalid')).not.toBeTruthy()
-    // });
     it('Если заполненные в форме поля не проходят валидацию, то выдает оишбку, иначе пропускает дальше и возвращает сообщение с успехом', async () => {
         let formComp = (
             <BrowserRouter>

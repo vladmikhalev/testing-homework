@@ -1,40 +1,5 @@
 const { assert } = require('chai');
-// process.env.BUG_ID = 9;
 const BUG_ID = process.env.BUG_ID ? `?bug_id=${process.env.BUG_ID}` : "";
-
-describe('в магазине должны быть страницы: главная, каталог, условия доставки, контакты', async function () {
-    it('главная', async function () {
-        const url = `http://localhost:3000/hw/store${BUG_ID}`;
-        await this.browser.url(url);
-        await this.browser.assertView('plain', 'body', {
-            screenshotDelay: 10,
-        });
-    });
-    it('каталог', async function () {
-        this.browser.setWindowSize(1000, 100000)
-        const url = `http://localhost:3000/hw/store/catalog${BUG_ID}`;
-        await this.browser.url(url);
-        await this.browser.assertView('plain', 'body', {
-            screenshotDelay: 10,
-            ignoreElements: ['.ProductItem'],
-
-        });
-    });
-    it('условия доставки', async function () {
-        const url = `http://localhost:3000/hw/store/delivery${BUG_ID}`;
-        await this.browser.url(url);
-        await this.browser.assertView('plain', 'body', {
-            screenshotDelay: 10,
-        });
-    });
-    it('контакты', async function () {
-        const url = `http://localhost:3000/hw/store/contacts${BUG_ID}`;
-        await this.browser.url(url);
-        await this.browser.assertView('plain', 'body', {
-            screenshotDelay: 10,
-        });
-    });
-});
 
 
 describe('Проверка навбара', async function () {
@@ -250,15 +215,6 @@ describe('Проверка бургер меню', async function () {
 
 
 
-// it('Тест, который пройдет', async function () {
-//     const url = `http://localhost:3000/hw/store${BUG_ID}`;
-//     await this.browser.url('https://www.microsoft.com/ru-ru/');
-//     await this.browser.assertView('plain', 'body');
-
-//     const title = await this.browser.$('#uhfLogo').getText();
-//     assert.equal(title, 'Microsoft');
-// });
-
 
 
 describe('Проверка страницы детальной информации', async function () {
@@ -283,55 +239,13 @@ describe('Проверка детальной информации', async funct
         const url = `http://localhost:3000/hw/store/catalog${BUG_ID}`;
         await this.browser.url(url);
 
-        // const linkToСatalog = await this.browser.$('a=Catalog');
         const linkToDetails = await this.browser.$('.ProductItem-DetailsLink');
-        // const linkToDetails = this.document.querySelector('.ProductItem-DetailsLink')  
         
-        console.log(linkToDetails)
         await linkToDetails.click(); 
-        // Ожидание перехода на другую страницу
-        // await page.waitForNavigation();
 
-        // const blockDetails = await this.browser.$('h5[data-testid="product-name"]').getText();
         await this.browser.assertView('plain', 'body', {
             screenshotDelay: 1000,
             ignoreElements: ['.test'],
         });
     });
 });
-
-// describe('Проверка страницы каталог', async function () {
-//     it('Проверка карточек на наличие данных', async function () {
-//         const puppeteer = await this.browser.getPuppeteer();
-//         const [page] = await puppeteer.pages();
-//         this.browser.setWindowSize(1920, 1080)
-//         // ${BUG_ID}
-//         const url = `http://localhost:3000/hw/store/catalog${BUG_ID}`;
-//         await this.browser.url(url);
-//         await this.browser.refresh();
-//         // const element = await page.$('#f-name');
-//         // сonsole.log(element)
-//         // await page.waitForSelector("f-name", { timeout: 5000 });
-//         // Form-Field_type_name
-
-//         // const linkToСatalog = await this.browser.$('a=Catalog');
-//         // const linkToDetails = await this.browser.$('a[data-testid="link-to-details"]');
-//         // await linkToСatalog.click(); 
-//         // Ожидание перехода на другую страницу
-//         // await page.waitForNavigation();
-
-
-//         const productName = await this.browser.$('h5[data-testid="product-name"]').getText();
-//         const productPrice = await this.browser.$('p[data-testid="product-price"]').getText();
-//         const linkToDetails = await this.browser.$('a[data-testid="link-to-details"]').getText();
-//         console.log('---------------------   ', productName, productPrice, linkToDetails, '   --------------------');
-//         // await expect(productName).not.toBe('');
-//         // await expect(productPrice).not.toBe('');
-//         // await expect(linkToDetails).not.toBe('');
-
-
-//         await this.browser.assertView('plain', 'body', {
-//             screenshotDelay: 1000,
-//         });
-//     });
-// });
